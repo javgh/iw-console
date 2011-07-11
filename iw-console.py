@@ -59,7 +59,7 @@ print "Bitcoin address is: %s" % call_api('w/%s/address' % wallet_id)['address']
 print "To do a payment try: payment <address> <amount in BTC>"
 
 # subscribe to balance updates
-subscription_id = call_api('w/%s/subscription' % wallet_id)['subscription_id']
+subscription_id = call_api('w/%s/subscription' % wallet_id, "")['subscription_id']
 request = json.dumps({'subscription_id': subscription_id})
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 s.connect(('www.instawallet.org', 8202))
