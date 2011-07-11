@@ -21,10 +21,7 @@ def call_api(url_suffix, data = None):
     data = f.read()
     return json.loads(data)
 
-def execute_cmd(cmd, wallet_id):
-    if not cmd.startswith('payment'):
-        return "Command not recognized"
-
+def initiate_payment(cmd, wallet_id):
     params = cmd.split(" ")
     if not len(params) > 2:
         return "Not enough parameters"
@@ -42,7 +39,7 @@ def format_btc_amount(amount):
     s = "%.8f" % (float(amount) / 10**8)
     return re.sub("\.?0+$", "", s)
 
-# check for configuration file
+# check for configuration file to load wallet_id from
 conffile = os.path.join(os.environ['HOME'], '.iw-console')
 if os.path.isfile(conffile):
     with open(conffile, 'r') as f:
@@ -72,7 +69,10 @@ while True:
     for iready in i:
         if iready == sys.stdin:
             cmd = sys.stdin.readline().strip()
-            print execute_cmd(cmd, wallet_id)
+            if cmd.startswith('payment'):
+                print initiate_payment(cmd, wallet_id)
+            else:
+                print "Command not recognized"
         else:
             _ = iready.recv(4096)   # don't care about payload,
                                     # we know it was a 'ping'
