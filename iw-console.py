@@ -49,7 +49,7 @@ if os.path.isfile(conffile):
         wallet_id = f.readline().strip()
 else:
     # looks like no configuration exists -> create new wallet
-    wallet_id = call_api('new_wallet')['wallet_id']
+    wallet_id = call_api('new_wallet', "")['wallet_id']
     with open(conffile, 'w') as f:
         f.write("%s\n" % wallet_id)
 
